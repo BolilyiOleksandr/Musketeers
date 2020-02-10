@@ -4,8 +4,8 @@ namespace Musketeers
 {
     public interface ILocation
     {
-        public string City { get; set; }
-        public int PostalCode { get; set; }
-        public string Country { get; set; }
+        string City { get; set; }
+        int PostalCode { get; set; }
+        string Country { get; set; }
     }
 }

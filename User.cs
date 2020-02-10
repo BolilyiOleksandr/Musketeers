@@ -7,8 +7,8 @@ namespace Musketeers
         public User() { }
         public string Username { get; set; }
         public string Email { get; set; }
-        string ILocation.City { get; set; }
-        int ILocation.PostalCode { get; set; }
-        string ILocation.Country { get; set; }
+        public string City { get; set; }
+        public int PostalCode { get; set; }
+        public string Country { get; set; }
     }
 }
