@@ -5,7 +5,10 @@ namespace Musketeers
 {
     class MainClass
     {
+        #region Variables
         private Dictionary<string, User> userDictionary = null;
+        private Dictionary<string, CarWorkshop> carWorkshops = null;
+        #endregion
 
         public static void Main(string[] args)
         {
@@ -13,6 +16,7 @@ namespace Musketeers
 
             var main = new MainClass();
             main.userDictionary = new Dictionary<string, User>();
+            main.carWorkshops = new Dictionary<string, CarWorkshop>();
 
             while (true)
             {
