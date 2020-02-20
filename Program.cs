@@ -12,18 +12,19 @@ namespace Musketeers
 
         private User _user = null;
         private CarWorkshop _carWorkshop = null;
-        private Dictionary<string, User> userDictionary = null;
-        private Dictionary<string, CarWorkshop> carWorkshops = null;
+        private Dictionary<string, User> _userDictionary = null;
+        private Dictionary<string, CarWorkshop> _carWorkshopsDictionary = null;
         #endregion
 
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Car Workshops!\n");
 
-            var main = new MainClass();
-            main._user = new User();
-            main.userDictionary = new Dictionary<string, User>();
-            main.carWorkshops = new Dictionary<string, CarWorkshop>();
+            var main = new MainClass()
+            {
+                _userDictionary = new Dictionary<string, User>(),
+                _carWorkshopsDictionary = new Dictionary<string, CarWorkshop>()
+            };
 
             while (true)
             {
@@ -34,7 +35,7 @@ namespace Musketeers
                 switch (input)
                 {
                     case 1:
-                        main.Create<User>(main._user);
+                        main.Create<User>(new User());
                         break;
                     case 2:
                         main.ShowUsers();
@@ -75,40 +76,35 @@ namespace Musketeers
         {
             if (entity is User)
             {
-                FillUserInformation<User>(_user);
-                if (!CheckUniqueFieldsAreFilled(_user.Username, _user.Email, entity))
-                    return new Dictionary<string, T>();
-            }
+                FillUserInformation<T>(entity);
+                if (!CheckUniqueFieldsAreFilled<T>(_user.Username, _user.Email, entity))
+                    return (Dictionary<string, T>)(object)_userDictionary;
 
-            /*
-
-            if (userDictionary.Count == 0)
-                userDictionary.Add(user.Username, user);
-            else
-            {
-                if (userDictionary.ContainsKey(user.Username))
-                {
-                    Console.WriteLine($"The user with key - {user.Username} - already exists in the dictionary.\n");
-                    return userDictionary;
-                }
+                if (_userDictionary.Count == 0)
+                    _userDictionary.Add(_user.Username, _user);
                 else
                 {
-                    foreach (KeyValuePair<string, User> keyValuePair in userDictionary)
+                    if (_userDictionary.ContainsKey(_user.Username))
                     {
-                        if (keyValuePair.Value.Email.Equals(user.Email))
-                        {
-                            Console.WriteLine($"The user with email - {user.Email} - already exists in the dictionary.\n");
-                            return userDictionary;
-                        }
+                        Console.WriteLine($"The user with key - {_user.Username} - already exists in the dictionary.\n");
+                        return (Dictionary<string, T>)(object)_userDictionary;
                     }
-                    userDictionary.Add(user.Username, user);
+                    else
+                    {
+                        foreach (KeyValuePair<string, User> keyValuePair in _userDictionary)
+                        {
+                            if (keyValuePair.Value.Email.Equals(_user.Email))
+                            {
+                                Console.WriteLine($"The user with email - {_user.Email} - already exists in the dictionary.\n");
+                                return (Dictionary<string, T>)(object)_userDictionary;
+                            }
+                        }
+                        _userDictionary.Add(_user.Username, _user);
+                    }
                 }
             }
 
-            return userDictionary;
-            */
-
-            return new Dictionary<string, T>();
+            return (Dictionary<string, T>)(object)_userDictionary;
         }
 
         private bool CheckUniqueFieldsAreFilled<T>(string firstField, string secondField, T entity)
@@ -159,6 +155,8 @@ namespace Musketeers
 
         private void FillUserInformation<T>(T entity)
         {
+            _user = entity as User;
+
             Console.WriteLine("***********************************************");
             Console.Write("Username: ");
             _user.Username = Console.ReadLine();
@@ -203,22 +201,22 @@ namespace Musketeers
             Console.Write("Username: ");
             var userName = Console.ReadLine();
 
-            if (userDictionary.ContainsKey(userName))
-                userDictionary.Remove(userName);
+            if (_userDictionary.ContainsKey(userName))
+                _userDictionary.Remove(userName);
             else
                 Console.WriteLine("User does not exist in the dictionary.");
 
-            return userDictionary;
+            return _userDictionary;
         }
 
         private void ShowUsers()
         {
-            if (userDictionary.Count == 0)
+            if (_userDictionary.Count == 0)
                 Console.WriteLine("There are no users in the dictionary.\n");
             else
             {
                 Console.WriteLine("-----------------------------------------------");
-                foreach (KeyValuePair<string, User> item in userDictionary)
+                foreach (KeyValuePair<string, User> item in _userDictionary)
                 {
                     Console.WriteLine($"Username: {item.Value.Username}");
                     Console.WriteLine($"Email: {item.Value.Email}");
