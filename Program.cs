@@ -77,6 +77,7 @@ namespace Musketeers
             if (entity is User)
             {
                 FillUserInformation<T>(entity);
+
                 if (!CheckUniqueFieldsAreFilled<T>(_user.Username, _user.Email, entity))
                     return (Dictionary<string, T>)(object)_userDictionary;
 
@@ -102,9 +103,10 @@ namespace Musketeers
                         _userDictionary.Add(_user.Username, _user);
                     }
                 }
+                return (Dictionary<string, T>)(object)_userDictionary;
             }
 
-            return (Dictionary<string, T>)(object)_userDictionary;
+            return new Dictionary<string, T>();
         }
 
         private bool CheckUniqueFieldsAreFilled<T>(string firstField, string secondField, T entity)
