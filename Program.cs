@@ -28,6 +28,9 @@ namespace Musketeers
                     case 2:
                         main.ShowUsers();
                         break;
+                    case 3:
+                        main.DeleteUserByUserName();
+                        break;
                     default:
                         Console.Write("Please select an option from the list.\n");
                         break;
@@ -42,7 +45,8 @@ namespace Musketeers
             Console.WriteLine("Show users: press 2");
             Console.WriteLine("Delete a user: press 3");
             Console.WriteLine("Create a car workshop: press 4");
-            Console.WriteLine("Delete a car workshop: press 5\n");
+            Console.WriteLine("Show a car workshop: press 5");
+            Console.WriteLine("Delete a car workshop: press 6\n");
             Console.WriteLine("===============================================");
 
             Console.Write("\nYou press: ");
@@ -69,14 +73,38 @@ namespace Musketeers
                 userDictionary.Add(user.Username, user);
             else
             {
-                if (userDictionary.ContainsKey(user.Username) || userDictionary.Values.Equals(user.Email))
+                if (userDictionary.ContainsKey(user.Username))
                 {
-                    Console.WriteLine($"The user with key - {user.Username} - or emai - {user.Email} - already exists in the dictionary.");
+                    Console.WriteLine($"The user with key - {user.Username} - already exists in the dictionary.\n");
+                    return userDictionary;
                 }
                 else
+                {
+                    foreach (KeyValuePair<string, User> keyValuePair in userDictionary)
+                    {
+                        if (keyValuePair.Value.Email.Equals(user.Email))
+                        {
+                            Console.WriteLine($"The user with email - {user.Email} - already exists in the dictionary.\n");
+                            return userDictionary;
+                        }
+                    }
                     userDictionary.Add(user.Username, user);
-
+                }
             }
+
+            return userDictionary;
+        }
+
+        private Dictionary<string, User> DeleteUserByUserName()
+        {
+            Console.WriteLine("***********************************************");
+            Console.Write("Username: ");
+            var userName = Console.ReadLine();
+
+            if (userDictionary.ContainsKey(userName))
+                userDictionary.Remove(userName);
+            else
+                Console.WriteLine("User does not exist in the dictionary.");
 
             return userDictionary;
         }
@@ -106,7 +134,7 @@ namespace Musketeers
         private void ShowUsers()
         {
             if (userDictionary.Count == 0)
-                Console.WriteLine("There are no users to show.\n");
+                Console.WriteLine("There are no users in the dictionary.\n");
             else
             {
                 Console.WriteLine("-----------------------------------------------");
