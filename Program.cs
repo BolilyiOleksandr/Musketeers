@@ -38,13 +38,16 @@ namespace Musketeers
                         main.Create<User>(new User());
                         break;
                     case 2:
-                        main.ShowUsers();
+                        main.Show<User>();
                         break;
-                    case 3:
-                        main.DeleteUserByUserName();
-                        break;
+                    //case 3:
+                    //    main.DeleteUserByUserName();
+                    //    break;
                     case 4:
                         main.Create<CarWorkshop>(new CarWorkshop());
+                        break;
+                    case 5:
+                        main.Show<CarWorkshop>();
                         break;
                     default:
                         Console.Write("Please select an option from the list.\n");
@@ -77,6 +80,11 @@ namespace Musketeers
             if (entity is User)
             {
                 return CreateUser(entity);
+            }
+
+            if (entity is CarWorkshop)
+            {
+                return CreateCarWorkshop(entity);
             }
 
             return new Dictionary<string, T>();
@@ -114,6 +122,38 @@ namespace Musketeers
             return (Dictionary<string, T>)(object)_userDictionary;
         }
 
+        private Dictionary<string, T> CreateCarWorkshop<T>(T entity)
+        {
+            FillCarWorkshopInformation<T>(entity);
+
+            if (!CheckUniqueFieldsAreFilled<T>(_carWorkshop.CompanyName, _carWorkshop.CarTrademarks, entity))
+                return (Dictionary<string, T>)(object)_carWorkshopsDictionary;
+
+            if (_carWorkshopsDictionary.Count == 0)
+                _carWorkshopsDictionary.Add(_carWorkshop.CompanyName, _carWorkshop);
+            else
+            {
+                if (_carWorkshopsDictionary.ContainsKey(_carWorkshop.CompanyName))
+                {
+                    Console.WriteLine($"The car workshop with key - {_carWorkshop.CompanyName} - already exists in the dictionary.\n");
+                    return (Dictionary<string, T>)(object)_carWorkshopsDictionary;
+                }
+                else
+                {
+                    foreach (KeyValuePair<string, CarWorkshop> keyValuePair in _carWorkshopsDictionary)
+                    {
+                        if (keyValuePair.Value.CarTrademarks.Equals(_carWorkshop.CarTrademarks))
+                        {
+                            Console.WriteLine($"The car workshop with car trademarks - {_carWorkshop.CarTrademarks} - already exists in the dictionary.\n");
+                            return (Dictionary<string, T>)(object)_carWorkshopsDictionary;
+                        }
+                    }
+                    _carWorkshopsDictionary.Add(_carWorkshop.CompanyName, _carWorkshop);
+                }
+            }
+            return (Dictionary<string, T>)(object)_carWorkshopsDictionary;
+        }
+
         private bool CheckUniqueFieldsAreFilled<T>(string firstField, string secondField, T entity)
         {
             if (!string.IsNullOrEmpty(firstField) && !string.IsNullOrWhiteSpace(firstField) &&
@@ -126,6 +166,10 @@ namespace Musketeers
                 if (entity is User)
                 {
                     CheckUserUniqueFieldsAreFilled(firstField, secondField);
+                }
+                if (entity is CarWorkshop)
+                {
+                    CheckCarWorkshopUniqueFieldsAreFilled(firstField, secondField);
                 }
             }
 
@@ -142,8 +186,20 @@ namespace Musketeers
             Console.WriteLine();
         }
 
-        private void FillCarWorkshopInformation<T>(List<T> list)
+        private void CheckCarWorkshopUniqueFieldsAreFilled(string firstField, string secondField)
         {
+            if (string.IsNullOrEmpty(firstField) || string.IsNullOrWhiteSpace(firstField))
+                Console.WriteLine("You need to fill a company name information.");
+            if (string.IsNullOrEmpty(secondField) || string.IsNullOrWhiteSpace(secondField))
+                Console.WriteLine("You need to fill a car trademark information.");
+
+            Console.WriteLine();
+        }
+
+        private void FillCarWorkshopInformation<T>(T entity)
+        {
+            _carWorkshop = entity as CarWorkshop;
+
             Console.WriteLine("***********************************************");
             Console.Write("Company Name: ");
             _carWorkshop.CompanyName = Console.ReadLine();
@@ -156,8 +212,6 @@ namespace Musketeers
             _carWorkshop.City = location[0];
             _carWorkshop.PostalCode = Convert.ToInt32(location[1]);
             _carWorkshop.Country = location[2];
-
-            list.Add((T)(object)_carWorkshop);
         }
 
         private void FillUserInformation<T>(T entity)
@@ -216,6 +270,18 @@ namespace Musketeers
             return _userDictionary;
         }
 
+        private void Show<T>()
+        {
+            if (typeof(T) == typeof(User))
+            {
+                ShowUsers();
+            }
+            if (typeof(T) == typeof(CarWorkshop))
+            {
+                ShowCarWorkshops();
+            }
+        }
+
         private void ShowUsers()
         {
             if (_userDictionary.Count == 0)
@@ -236,5 +302,24 @@ namespace Musketeers
             }
         }
 
+        private void ShowCarWorkshops()
+        {
+            if (_carWorkshopsDictionary.Count == 0)
+                Console.WriteLine("There are no car workshops in the dictionary.\n");
+            else
+            {
+                Console.WriteLine("-----------------------------------------------");
+                foreach (KeyValuePair<string, CarWorkshop> item in _carWorkshopsDictionary)
+                {
+                    Console.WriteLine($"Company Name: {item.Value.CompanyName}");
+                    Console.WriteLine($"Car Trademarks: {item.Value.CarTrademarks}");
+                    Console.WriteLine($"City: {item.Value.City}");
+                    Console.WriteLine($"Postal Code: {item.Value.PostalCode}");
+                    Console.WriteLine($"Country: {item.Value.Country}");
+                    Console.WriteLine();
+                }
+                Console.WriteLine("-----------------------------------------------\n");
+            }
+        }
     }
 }
