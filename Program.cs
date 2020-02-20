@@ -21,6 +21,7 @@ namespace Musketeers
             Console.WriteLine("Welcome to Car Workshops!\n");
 
             var main = new MainClass();
+            main._user = new User();
             main.userDictionary = new Dictionary<string, User>();
             main.carWorkshops = new Dictionary<string, CarWorkshop>();
 
@@ -33,7 +34,7 @@ namespace Musketeers
                 switch (input)
                 {
                     case 1:
-                        main.FillDictionary<User>(new User());
+                        main.Create<User>(main._user);
                         break;
                     case 2:
                         main.ShowUsers();
@@ -42,7 +43,7 @@ namespace Musketeers
                         main.DeleteUserByUserName();
                         break;
                     case 4:
-                        main.FillDictionary<CarWorkshop>(new CarWorkshop());
+                        main.Create<CarWorkshop>(new CarWorkshop());
                         break;
                     default:
                         Console.Write("Please select an option from the list.\n");
@@ -68,6 +69,132 @@ namespace Musketeers
             Console.WriteLine();
 
             return input;
+        }
+
+        private Dictionary<string, T> Create<T>(T entity)
+        {
+            if (entity is User)
+            {
+                FillUserInformation<User>(_user);
+                if (!CheckUniqueFieldsAreFilled(_user.Username, _user.Email, entity))
+                    return new Dictionary<string, T>();
+            }
+
+            /*
+
+            if (userDictionary.Count == 0)
+                userDictionary.Add(user.Username, user);
+            else
+            {
+                if (userDictionary.ContainsKey(user.Username))
+                {
+                    Console.WriteLine($"The user with key - {user.Username} - already exists in the dictionary.\n");
+                    return userDictionary;
+                }
+                else
+                {
+                    foreach (KeyValuePair<string, User> keyValuePair in userDictionary)
+                    {
+                        if (keyValuePair.Value.Email.Equals(user.Email))
+                        {
+                            Console.WriteLine($"The user with email - {user.Email} - already exists in the dictionary.\n");
+                            return userDictionary;
+                        }
+                    }
+                    userDictionary.Add(user.Username, user);
+                }
+            }
+
+            return userDictionary;
+            */
+
+            return new Dictionary<string, T>();
+        }
+
+        private bool CheckUniqueFieldsAreFilled<T>(string firstField, string secondField, T entity)
+        {
+            if (!string.IsNullOrEmpty(firstField) && !string.IsNullOrWhiteSpace(firstField) &&
+                !string.IsNullOrEmpty(secondField) && !string.IsNullOrWhiteSpace(secondField))
+            {
+                return true;
+            }
+            else
+            {
+                if (entity is User)
+                {
+                    CheckUserUniqueFieldsAreFilled(firstField, secondField);
+                }
+            }
+
+            return false;
+        }
+
+        private void CheckUserUniqueFieldsAreFilled(string firstField, string secondField)
+        {
+            if (string.IsNullOrEmpty(firstField) || string.IsNullOrWhiteSpace(firstField))
+                Console.WriteLine("You need to fill a username information.");
+            if (string.IsNullOrEmpty(secondField) || string.IsNullOrWhiteSpace(secondField))
+                Console.WriteLine("You need to fill an email information.");
+
+            Console.WriteLine();
+        }
+
+        private void FillCarWorkshopInformation<T>(List<T> list)
+        {
+            Console.WriteLine("***********************************************");
+            Console.Write("Company Name: ");
+            _carWorkshop.CompanyName = Console.ReadLine();
+
+            Console.Write("Car Trademarks: ");
+            _carWorkshop.CarTrademarks = Console.ReadLine();
+
+            var location = FillLocation();
+
+            _carWorkshop.City = location[0];
+            _carWorkshop.PostalCode = Convert.ToInt32(location[1]);
+            _carWorkshop.Country = location[2];
+
+            list.Add((T)(object)_carWorkshop);
+        }
+
+        private void FillUserInformation<T>(T entity)
+        {
+            Console.WriteLine("***********************************************");
+            Console.Write("Username: ");
+            _user.Username = Console.ReadLine();
+
+            Console.Write("Email: ");
+            _user.Email = Console.ReadLine();
+
+            var location = FillLocation();
+
+            _user.City = location[0];
+            _user.PostalCode = Convert.ToInt32(location[1]);
+            _user.Country = location[2];
+        }
+
+        private List<string> FillLocation()
+        {
+            Console.Write("City: ");
+            _city = Console.ReadLine();
+
+            Console.Write("Postal Code: ");
+            var postalCode = 0;
+            int.TryParse(Console.ReadLine(), out postalCode);
+            _postalCode = postalCode;
+
+            Console.Write("Country: ");
+            _country = Console.ReadLine();
+            Console.WriteLine("***********************************************\n");
+
+            var location = new List<string>()
+            {
+                _city,
+                _postalCode.ToString(),
+                _country
+            };
+
+            return location;
         }
 
         private Dictionary<string, User> DeleteUserByUserName()
@@ -104,143 +231,5 @@ namespace Musketeers
             }
         }
 
-        private Dictionary<string, T> Create<T>(T entity)
-        {
-            if (entity is User)
-            {
-
-            }
-
-            /*
-            if (string.IsNullOrEmpty(user.Username) || string.IsNullOrWhiteSpace(user.Username) ||
-                string.IsNullOrEmpty(user.Email) || string.IsNullOrWhiteSpace(user.Email))
-            {
-                Console.WriteLine("You need to fill username or email information.\n");
-                return null;
-            }
-
-            if (userDictionary.Count == 0)
-                userDictionary.Add(user.Username, user);
-            else
-            {
-                if (userDictionary.ContainsKey(user.Username))
-                {
-                    Console.WriteLine($"The user with key - {user.Username} - already exists in the dictionary.\n");
-                    return userDictionary;
-                }
-                else
-                {
-                    foreach (KeyValuePair<string, User> keyValuePair in userDictionary)
-                    {
-                        if (keyValuePair.Value.Email.Equals(user.Email))
-                        {
-                            Console.WriteLine($"The user with email - {user.Email} - already exists in the dictionary.\n");
-                            return userDictionary;
-                        }
-                    }
-                    userDictionary.Add(user.Username, user);
-                }
-            }
-
-            return userDictionary;
-            */
-
-            return new Dictionary<string, T>();
-        }
-
-        private void FillDictionary<T>(T entity)
-        {
-            var dictionary = new Dictionary<string, T>();
-
-            if (entity is User)
-            {
-                _user = entity as User;
-                Create<T>((T)(object)FillInformation<User>(_user));
-            }
-
-            //if (entity is CarWorkshop)
-            //{
-            //    _carWorkshop = entity as CarWorkshop;
-            //    var result = FillInformation<CarWorkshop>(_carWorkshop);
-            //    dictionary.Add(_carWorkshop.CompanyName, (T)(object)result);
-            //}
-        }
-
-        private List<T> FillInformation<T>(T entity)
-        {
-            var list = new List<T>();
-
-            if (entity is User)
-            {
-                FillUserInformation(list);
-            }
-
-            if (entity is CarWorkshop)
-            {
-                FillCarWorkshopInformation(list);
-            }
-
-            return list;
-        }
-
-        private void FillCarWorkshopInformation<T>(List<T> list)
-        {
-            Console.WriteLine("***********************************************");
-            Console.Write("Company Name: ");
-            _carWorkshop.CompanyName = Console.ReadLine();
-
-            Console.Write("Car Trademarks: ");
-            _carWorkshop.CarTrademarks = Console.ReadLine();
-
-            var location = FillLocation();
-
-            _carWorkshop.City = location[0];
-            _carWorkshop.PostalCode = Convert.ToInt32(location[1]);
-            _carWorkshop.Country = location[2];
-
-            list.Add((T)(object)_carWorkshop);
-        }
-
-        private void FillUserInformation<T>(List<T> list)
-        {
-            Console.WriteLine("***********************************************");
-            Console.Write("Username: ");
-            _user.Username = Console.ReadLine();
-
-            Console.Write("Email: ");
-            _user.Email = Console.ReadLine();
-
-            var location = FillLocation();
-
-            _user.City = location[0];
-            _user.PostalCode = Convert.ToInt32(location[1]);
-            _user.Country = location[2];
-
-            list.Add((T)(object)_user);
-        }
-
-        private List<string> FillLocation()
-        {
-            Console.Write("City: ");
-            _city = Console.ReadLine();
-
-            Console.Write("Postal Code: ");
-            var postalCode = 0;
-            int.TryParse(Console.ReadLine(), out postalCode);
-            _postalCode = postalCode;
-
-            Console.Write("Country: ");
-            _country = Console.ReadLine();
-            Console.WriteLine("***********************************************\n");
-
-            var location = new List<string>()
-            {
-                _city,
-                _postalCode.ToString(),
-                _country
-            };
-
-            return location;
-        }
     }
 }
