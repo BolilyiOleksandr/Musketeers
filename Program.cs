@@ -76,37 +76,42 @@ namespace Musketeers
         {
             if (entity is User)
             {
-                FillUserInformation<T>(entity);
-
-                if (!CheckUniqueFieldsAreFilled<T>(_user.Username, _user.Email, entity))
-                    return (Dictionary<string, T>)(object)_userDictionary;
-
-                if (_userDictionary.Count == 0)
-                    _userDictionary.Add(_user.Username, _user);
-                else
-                {
-                    if (_userDictionary.ContainsKey(_user.Username))
-                    {
-                        Console.WriteLine($"The user with key - {_user.Username} - already exists in the dictionary.\n");
-                        return (Dictionary<string, T>)(object)_userDictionary;
-                    }
-                    else
-                    {
-                        foreach (KeyValuePair<string, User> keyValuePair in _userDictionary)
-                        {
-                            if (keyValuePair.Value.Email.Equals(_user.Email))
-                            {
-                                Console.WriteLine($"The user with email - {_user.Email} - already exists in the dictionary.\n");
-                                return (Dictionary<string, T>)(object)_userDictionary;
-                            }
-                        }
-                        _userDictionary.Add(_user.Username, _user);
-                    }
-                }
-                return (Dictionary<string, T>)(object)_userDictionary;
+                return CreateUser(entity);
             }
 
             return new Dictionary<string, T>();
+        }
+
+        private Dictionary<string, T> CreateUser<T>(T entity)
+        {
+            FillUserInformation<T>(entity);
+
+            if (!CheckUniqueFieldsAreFilled<T>(_user.Username, _user.Email, entity))
+                return (Dictionary<string, T>)(object)_userDictionary;
+
+            if (_userDictionary.Count == 0)
+                _userDictionary.Add(_user.Username, _user);
+            else
+            {
+                if (_userDictionary.ContainsKey(_user.Username))
+                {
+                    Console.WriteLine($"The user with key - {_user.Username} - already exists in the dictionary.\n");
+                    return (Dictionary<string, T>)(object)_userDictionary;
+                }
+                else
+                {
+                    foreach (KeyValuePair<string, User> keyValuePair in _userDictionary)
+                    {
+                        if (keyValuePair.Value.Email.Equals(_user.Email))
+                        {
+                            Console.WriteLine($"The user with email - {_user.Email} - already exists in the dictionary.\n");
+                            return (Dictionary<string, T>)(object)_userDictionary;
+                        }
+                    }
+                    _userDictionary.Add(_user.Username, _user);
+                }
+            }
+            return (Dictionary<string, T>)(object)_userDictionary;
         }
 
         private bool CheckUniqueFieldsAreFilled<T>(string firstField, string secondField, T entity)
