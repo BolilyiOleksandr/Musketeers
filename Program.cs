@@ -40,14 +40,17 @@ namespace Musketeers
                     case 2:
                         main.Show<User>();
                         break;
-                    //case 3:
-                    //    main.DeleteUserByUserName();
-                    //    break;
+                    case 3:
+                        main.Delete<User>();
+                        break;
                     case 4:
                         main.Create<CarWorkshop>(new CarWorkshop());
                         break;
                     case 5:
                         main.Show<CarWorkshop>();
+                        break;
+                    case 6:
+                        main.Delete<CarWorkshop>();
                         break;
                     default:
                         Console.Write("Please select an option from the list.\n");
@@ -64,7 +67,8 @@ namespace Musketeers
             Console.WriteLine("Delete a user: press 3");
             Console.WriteLine("Create a car workshop: press 4");
             Console.WriteLine("Show a car workshop: press 5");
-            Console.WriteLine("Delete a car workshop: press 6\n");
+            Console.WriteLine("Delete a car workshop: press 6");
+            Console.WriteLine("Exit: press 0\n");
             Console.WriteLine("===============================================");
 
             Console.Write("\nYou press: ");
@@ -256,7 +260,21 @@ namespace Musketeers
             return location;
         }
 
-        private Dictionary<string, User> DeleteUserByUserName()
+        private Dictionary<string, T> Delete<T>()
+        {
+            if (typeof(T) == typeof(User))
+            {
+                return DeleteUser<T>();
+            }
+            if (typeof(T) == typeof(CarWorkshop))
+            {
+                return DeleteCarWorkshop<T>();
+            }
+
+            return new Dictionary<string, T>();
+        }
+
+        private Dictionary<string, T> DeleteUser<T>()
         {
             Console.WriteLine("***********************************************");
             Console.Write("Username: ");
@@ -267,7 +285,23 @@ namespace Musketeers
             else
                 Console.WriteLine("User does not exist in the dictionary.");
 
-            return _userDictionary;
+            Console.WriteLine("***********************************************\n");
+            return (Dictionary<string, T>)(object)_userDictionary;
+        }
+
+        private Dictionary<string, T> DeleteCarWorkshop<T>()
+        {
+            Console.WriteLine("***********************************************");
+            Console.Write("Company Name: ");
+            var companyName = Console.ReadLine();
+
+            if (_carWorkshopsDictionary.ContainsKey(companyName))
+                _carWorkshopsDictionary.Remove(companyName);
+            else
+                Console.WriteLine("Car Workshop does not exist in the dictionary.");
+
+            Console.WriteLine("***********************************************\n");
+            return (Dictionary<string, T>)(object)_carWorkshopsDictionary;
         }
 
         private void Show<T>()
