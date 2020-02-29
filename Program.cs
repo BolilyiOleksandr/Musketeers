@@ -56,6 +56,9 @@ namespace Musketeers
                     case 7:
                         main.Search<CarWorkshop>();
                         break;
+                    case 8:
+                        main.CreateAppoitment<User>();
+                        break;
                     default:
                         Console.Write("Please select an option from the list.\n");
                         break;
@@ -73,6 +76,7 @@ namespace Musketeers
             Console.WriteLine("Show a car workshop: press 5");
             Console.WriteLine("Delete a car workshop: press 6");
             Console.WriteLine("Search for all car workshops in a specific city: press 7");
+            Console.WriteLine("Create an appointment: press 8");
             Console.WriteLine("Exit: press 0\n");
             Console.WriteLine("===============================================");
 
@@ -135,7 +139,7 @@ namespace Musketeers
         {
             FillCarWorkshopInformation<T>(entity);
 
-            if (!CheckUniqueFieldsAreFilled<T>(_carWorkshop.CompanyName, _carWorkshop.CarTrademarks, entity))
+            if (!CheckUniqueFieldsAreFilled<T>(_carWorkshop.CompanyName, string.Empty, entity))
                 return (Dictionary<string, T>)(object)_carWorkshopsDictionary;
 
             if (_carWorkshopsDictionary.Count == 0)
@@ -157,20 +161,18 @@ namespace Musketeers
 
         private bool CheckUniqueFieldsAreFilled<T>(string firstField, string secondField, T entity)
         {
-            if (!string.IsNullOrEmpty(firstField) && !string.IsNullOrWhiteSpace(firstField) &&
-                !string.IsNullOrEmpty(secondField) && !string.IsNullOrWhiteSpace(secondField))
+            if (!string.IsNullOrEmpty(firstField) && !string.IsNullOrWhiteSpace(firstField))
             {
-                return true;
-            }
-            else
-            {
-                if (entity is User)
+                if (!string.IsNullOrEmpty(secondField) && !string.IsNullOrWhiteSpace(secondField) &&
+                    entity is User)
                 {
                     CheckUserUniqueFieldsAreFilled(firstField, secondField);
+                    return true;
                 }
                 if (entity is CarWorkshop)
                 {
-                    CheckCarWorkshopUniqueFieldsAreFilled(firstField, secondField);
+                    CheckCarWorkshopUniqueFieldsAreFilled(firstField);
+                    return true;
                 }
             }
 
@@ -187,12 +189,10 @@ namespace Musketeers
             Console.WriteLine();
         }
 
-        private void CheckCarWorkshopUniqueFieldsAreFilled(string firstField, string secondField)
+        private void CheckCarWorkshopUniqueFieldsAreFilled(string firstField)
         {
             if (string.IsNullOrEmpty(firstField) || string.IsNullOrWhiteSpace(firstField))
                 Console.WriteLine("You need to fill a company name information.");
-            if (string.IsNullOrEmpty(secondField) || string.IsNullOrWhiteSpace(secondField))
-                Console.WriteLine("You need to fill a car trademark information.");
 
             Console.WriteLine();
         }
@@ -377,13 +377,48 @@ namespace Musketeers
         {
             if (typeof(T) == typeof(CarWorkshop))
             {
-                Console.WriteLine("***********************************************");
-                Console.Write("City: ");
-                var city = Console.ReadLine();
-                Console.WriteLine();
-
+                string city = GetCity();
                 ShowCarWorkshops(city);
             }
         }
+
+        private string GetCity()
+        {
+            Console.WriteLine("***********************************************");
+            Console.Write("City: ");
+            var city = Console.ReadLine();
+            Console.WriteLine();
+            return city;
+        }
+
+        private Dictionary<string, T> CreateAppoitment<T>()
+        {
+            if (typeof(T) == typeof(User))
+            {
+                Console.WriteLine("***********************************************");
+
+                Console.Write("Username: ");
+                var userName = Console.ReadLine();
+
+                if (_userDictionary.Select(i => i.Key == userName).Count() == 0)
+                {
+                    Console.WriteLine("There are no users in the dictionary.\n");
+                    return new Dictionary<string, T>();
+                }
+
+                Console.Write("Company name: ");
+                var companyName = Console.ReadLine();
+
+                if (_carWorkshopsDictionary.Select(i => i.Key == companyName).Count() == 0)
+                {
+                    Console.WriteLine("There is no company name in the dictionary.\n");
+                    return new Dictionary<string, T>();
+                }
+            }
+
+            Console.WriteLine("***********************************************\n");
+            return (Dictionary<string, T>)(object)_userDictionary;
+        }
+
     }
 }

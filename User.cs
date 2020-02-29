@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Musketeers
 {
@@ -11,5 +12,6 @@ namespace Musketeers
         public string City { get; set; }
         public int PostalCode { get; set; }
         public string Country { get; set; }
+        public List<CarWorkshop> Appointment { get; set; }
     }
 }
