@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Musketeers
 {
@@ -52,6 +53,9 @@ namespace Musketeers
                     case 6:
                         main.Delete<CarWorkshop>();
                         break;
+                    case 7:
+                        main.Search<CarWorkshop>();
+                        break;
                     default:
                         Console.Write("Please select an option from the list.\n");
                         break;
@@ -68,6 +72,7 @@ namespace Musketeers
             Console.WriteLine("Create a car workshop: press 4");
             Console.WriteLine("Show a car workshop: press 5");
             Console.WriteLine("Delete a car workshop: press 6");
+            Console.WriteLine("Search for all car workshops in a specific city: press 7");
             Console.WriteLine("Exit: press 0\n");
             Console.WriteLine("===============================================");
 
@@ -144,14 +149,6 @@ namespace Musketeers
                 }
                 else
                 {
-                    foreach (KeyValuePair<string, CarWorkshop> keyValuePair in _carWorkshopsDictionary)
-                    {
-                        if (keyValuePair.Value.CarTrademarks.Equals(_carWorkshop.CarTrademarks))
-                        {
-                            Console.WriteLine($"The car workshop with car trademarks - {_carWorkshop.CarTrademarks} - already exists in the dictionary.\n");
-                            return (Dictionary<string, T>)(object)_carWorkshopsDictionary;
-                        }
-                    }
                     _carWorkshopsDictionary.Add(_carWorkshop.CompanyName, _carWorkshop);
                 }
             }
@@ -353,6 +350,39 @@ namespace Musketeers
                     Console.WriteLine();
                 }
                 Console.WriteLine("-----------------------------------------------\n");
+            }
+        }
+
+        private void ShowCarWorkshops(string city)
+        {
+            if (_carWorkshopsDictionary.Where(i => i.Value.City == city).Count() == 0)
+                Console.WriteLine($"There are no car workshops in the {city}.\n");
+            else
+            {
+                Console.WriteLine("-----------------------------------------------");
+                foreach (KeyValuePair<string, CarWorkshop> item in _carWorkshopsDictionary.Where(i => i.Value.City == city))
+                {
+                    Console.WriteLine($"Company Name: {item.Value.CompanyName}");
+                    Console.WriteLine($"Car Trademarks: {item.Value.CarTrademarks}");
+                    Console.WriteLine($"City: {item.Value.City}");
+                    Console.WriteLine($"Postal Code: {item.Value.PostalCode}");
+                    Console.WriteLine($"Country: {item.Value.Country}");
+                    Console.WriteLine();
+                }
+                Console.WriteLine("-----------------------------------------------\n");
+            }
+        }
+
+        private void Search<T>()
+        {
+            if (typeof(T) == typeof(CarWorkshop))
+            {
+                Console.WriteLine("***********************************************");
+                Console.Write("City: ");
+                var city = Console.ReadLine();
+                Console.WriteLine();
+
+                ShowCarWorkshops(city);
             }
         }
     }
