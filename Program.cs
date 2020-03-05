@@ -392,6 +392,10 @@ namespace Musketeers
             return (Dictionary<string, T>)(object)_carWorkshopsDictionary;
         }
 
+        /// <summary>
+        /// The method that shows the type instance.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
         private void Show<T>()
         {
             if (typeof(T) == typeof(User))
@@ -404,6 +408,9 @@ namespace Musketeers
             }
         }
 
+        /// <summary>
+        /// The method that shows the users.
+        /// </summary>
         private void ShowUsers()
         {
             if (_userDictionary.Count == 0)
@@ -424,6 +431,9 @@ namespace Musketeers
             }
         }
 
+        /// <summary>
+        /// The method that shows the car workshops.
+        /// </summary>
         private void ShowCarWorkshops()
         {
             if (_carWorkshopsDictionary.Count == 0)
@@ -444,6 +454,10 @@ namespace Musketeers
             }
         }
 
+        /// <summary>
+        /// The method that shows the car workshops in the specific city.
+        /// </summary>
+        /// <param name="city"><City value./param>
         private void ShowCarWorkshops(string city)
         {
             if (_carWorkshopsDictionary.Where(i => i.Value.City == city).Count() == 0)
@@ -464,6 +478,10 @@ namespace Musketeers
             }
         }
 
+        /// <summary>
+        /// The method that searches the type instance.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
         private void Search<T>()
         {
             if (typeof(T) == typeof(CarWorkshop))
@@ -473,6 +491,10 @@ namespace Musketeers
             }
         }
 
+        /// <summary>
+        /// The method that gets the city.
+        /// </summary>
+        /// <returns></returns>
         private string GetCity()
         {
             Console.WriteLine("***********************************************");
