@@ -34,49 +34,62 @@ namespace Musketeers
                 var input = main.SelectOption();
                 if (input == 0)
                     break;
-
-                switch (input)
-                {
-                    case 1:
-                        main.Create<User>(new User());
-                        break;
-                    case 2:
-                        main.Show<User>();
-                        break;
-                    case 3:
-                        main.Delete<User>();
-                        break;
-                    case 4:
-                        main.Create<CarWorkshop>(new CarWorkshop());
-                        break;
-                    case 5:
-                        main.Show<CarWorkshop>();
-                        break;
-                    case 6:
-                        main.Delete<CarWorkshop>();
-                        break;
-                    case 7:
-                        main.Search<CarWorkshop>();
-                        break;
-                    case 8:
-                        main.CreateAppoitment();
-                        break;
-                    case 9:
-                        main.ShowAppointment();
-                        break;
-                    case 10:
-                        main.UpdateAppointmentDateTime();
-                        break;
-                    case 11:
-                        main.DeleteAppointment();
-                        break;
-                    default:
-                        Console.Write("Please select an option from the list.\n");
-                        break;
-                }
+                SwitchSelectedOptionFromList(main, input);
             }
         }
 
+        /// <summary>
+        /// Method that switches the selected option from the list.
+        /// </summary>
+        /// <param name="main">Main class instance.</param>
+        /// <param name="input">Input value.</param>
+        private static void SwitchSelectedOptionFromList(MainClass main, int input)
+        {
+            switch (input)
+            {
+                case 1:
+                    main.Create<User>(new User());
+                    break;
+                case 2:
+                    main.Show<User>();
+                    break;
+                case 3:
+                    main.Delete<User>();
+                    break;
+                case 4:
+                    main.Create<CarWorkshop>(new CarWorkshop());
+                    break;
+                case 5:
+                    main.Show<CarWorkshop>();
+                    break;
+                case 6:
+                    main.Delete<CarWorkshop>();
+                    break;
+                case 7:
+                    main.Search<CarWorkshop>();
+                    break;
+                case 8:
+                    main.CreateAppoitment();
+                    break;
+                case 9:
+                    main.ShowAppointment();
+                    break;
+                case 10:
+                    main.UpdateAppointmentDateTime();
+                    break;
+                case 11:
+                    main.DeleteAppointment();
+                    break;
+                default:
+                    Console.Write("Please select an option from the list.\n");
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// The method that proposes to select an option from the list.
+        /// </summary>
+        /// <returns></returns>
         private int SelectOption()
         {
             Console.WriteLine("====Please select an option from the list.====\n");
