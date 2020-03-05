@@ -504,13 +504,16 @@ namespace Musketeers
             return city;
         }
 
+        /// <summary>
+        /// The method that creates an appointment between a user and a car workshop.
+        /// </summary>
+        /// <returns></returns>
         private Dictionary<string, Tuple<string, string, DateTime>> CreateAppoitment()
         {
             Console.WriteLine("***********************************************");
 
             Console.Write("Username: ");
             var userName = Console.ReadLine();
-
             if (_userDictionary.Select(i => i.Key == userName).Count() == 0)
             {
                 Console.WriteLine("There are no users in the dictionary.\n");
@@ -519,7 +522,6 @@ namespace Musketeers
 
             Console.Write("Company name: ");
             var companyName = Console.ReadLine();
-
             if (_carWorkshopsDictionary.Select(i => i.Key == companyName).Count() == 0)
             {
                 Console.WriteLine("There is no company name in the dictionary.\n");
@@ -528,7 +530,6 @@ namespace Musketeers
 
             Console.Write("Car trademark: ");
             var carTrademark = Console.ReadLine();
-
             if (_carWorkshopsDictionary.Select(i => i.Value.CarTrademarks == carTrademark).Count() == 0)
             {
                 Console.WriteLine("There is no car trademark in the dictionary.\n");
@@ -537,7 +538,6 @@ namespace Musketeers
 
             Console.Write("Date and Time: ");
             var dateTime = Convert.ToDateTime(Console.ReadLine());
-
             _appointment.Appointments = new Dictionary<string, Tuple<string, string, DateTime>>()
             {
                 [userName] = Tuple.Create(companyName, carTrademark, dateTime)
@@ -547,6 +547,9 @@ namespace Musketeers
             return _appointment.Appointments;
         }
 
+        /// <summary>
+        /// The method that shows an appointment.
+        /// </summary>
         private void ShowAppointment()
         {
             Console.Write("Username: ");
@@ -570,6 +573,9 @@ namespace Musketeers
             }
         }
 
+        /// <summary>
+        /// The method that updates an appointment date and time.
+        /// </summary>
         private void UpdateAppointmentDateTime()
         {
             Console.Write("Username: ");
@@ -605,6 +611,9 @@ namespace Musketeers
             }
         }
 
+        /// <summary>
+        /// The method that deletes an appointment.
+        /// </summary>
         private void DeleteAppointment()
         {
             Console.Write("Username: ");
