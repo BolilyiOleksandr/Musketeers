@@ -204,6 +204,14 @@ namespace Musketeers
             return (Dictionary<string, T>)(object)_carWorkshopsDictionary;
         }
 
+        /// <summary>
+        /// The method that checks if the unique fields are filled.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
+        /// <param name="firstField">First field value.</param>
+        /// <param name="secondField">Second field value.</param>
+        /// <param name="entity">Entity instance.</param>
+        /// <returns></returns>
         private bool CheckUniqueFieldsAreFilled<T>(string firstField, string secondField, T entity)
         {
             if (!string.IsNullOrEmpty(firstField) && !string.IsNullOrWhiteSpace(firstField))
@@ -224,6 +232,11 @@ namespace Musketeers
             return false;
         }
 
+        /// <summary>
+        /// The method that checks that user's unique fields are filled.
+        /// </summary>
+        /// <param name="firstField">First field value.</param>
+        /// <param name="secondField">Second field value.</param>
         private void CheckUserUniqueFieldsAreFilled(string firstField, string secondField)
         {
             if (string.IsNullOrEmpty(firstField) || string.IsNullOrWhiteSpace(firstField))
@@ -234,6 +247,10 @@ namespace Musketeers
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// The method that checks that the car workshop's unique fields are filled.
+        /// </summary>
+        /// <param name="firstField">First field value.</param>
         private void CheckCarWorkshopUniqueFieldsAreFilled(string firstField)
         {
             if (string.IsNullOrEmpty(firstField) || string.IsNullOrWhiteSpace(firstField))
