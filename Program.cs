@@ -64,6 +64,9 @@ namespace Musketeers
                     case 9:
                         main.ShowAppointment();
                         break;
+                    case 10:
+                        main.UpdateAppointmentDateTime();
+                        break;
                     default:
                         Console.Write("Please select an option from the list.\n");
                         break;
@@ -83,6 +86,7 @@ namespace Musketeers
             Console.WriteLine("Search for all car workshops in a specific city: press 7");
             Console.WriteLine("Create an appointment: press 8");
             Console.WriteLine("Show an appointment: press 9");
+            Console.WriteLine("Update an appointment date and time: press 10");
             Console.WriteLine("Exit: press 0\n");
             Console.WriteLine("===============================================");
 
@@ -460,6 +464,42 @@ namespace Musketeers
                     Console.WriteLine();
                 }
                 Console.WriteLine("-----------------------------------------------\n");
+            }
+        }
+
+        private void UpdateAppointmentDateTime()
+        {
+            Console.Write("Username: ");
+            var userName = Console.ReadLine();
+
+            Console.Write("Company name: ");
+            var companyName = Console.ReadLine();
+
+            Console.Write("Car trademark: ");
+            var carTrademark = Console.ReadLine();
+
+            Console.Write("Date and Time: ");
+            var dateTime = Convert.ToDateTime(Console.ReadLine());
+
+            if (_appointment.Appointments is null ||
+                _appointment.Appointments.Where(i => i.Key == userName).Count() == 0)
+                Console.WriteLine($"There are no appointments for {userName}.\n");
+            else
+            {
+                foreach (KeyValuePair<string, Tuple<string, string, DateTime>> keyValuePair in _appointment.Appointments)
+                {
+                    if (keyValuePair.Key.Equals(userName) &&
+                        keyValuePair.Value.Item1.Equals(companyName) &&
+                        keyValuePair.Value.Item2.Equals(carTrademark))
+                    {
+                        _appointment.Appointments.Remove(userName);
+                        _appointment.Appointments = new Dictionary<string, Tuple<string, string, DateTime>>
+                        {
+                            [userName] = Tuple.Create(companyName, carTrademark, dateTime)
+                        };
+                        break;
+                    }
+                }
             }
         }
 
