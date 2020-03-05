@@ -39,7 +39,7 @@ namespace Musketeers
         }
 
         /// <summary>
-        /// Method that switches the selected option from the list.
+        /// The method that switches the selected option from the list.
         /// </summary>
         /// <param name="main">Main class instance.</param>
         /// <param name="input">Input value.</param>
@@ -233,7 +233,7 @@ namespace Musketeers
         }
 
         /// <summary>
-        /// The method that checks that user's unique fields are filled.
+        /// The method that checks that the user's unique fields are filled.
         /// </summary>
         /// <param name="firstField">First field value.</param>
         /// <param name="secondField">Second field value.</param>
@@ -259,6 +259,11 @@ namespace Musketeers
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// The method that fills the car workshop information.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
+        /// <param name="entity">Entity instance.</param>
         private void FillCarWorkshopInformation<T>(T entity)
         {
             _carWorkshop = entity as CarWorkshop;
@@ -277,6 +282,11 @@ namespace Musketeers
             _carWorkshop.Country = location[2];
         }
 
+        /// <summary>
+        /// The method that fills the user information.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
+        /// <param name="entity">Entity instance.</param>
         private void FillUserInformation<T>(T entity)
         {
             _user = entity as User;
@@ -295,6 +305,10 @@ namespace Musketeers
             _user.Country = location[2];
         }
 
+        /// <summary>
+        /// The method that fills the location.
+        /// </summary>
+        /// <returns></returns>
         private List<string> FillLocation()
         {
             Console.Write("City: ");
@@ -319,6 +333,11 @@ namespace Musketeers
             return location;
         }
 
+        /// <summary>
+        /// The method that deletes the type instance.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
+        /// <returns></returns>
         private Dictionary<string, T> Delete<T>()
         {
             if (typeof(T) == typeof(User))
@@ -333,6 +352,11 @@ namespace Musketeers
             return new Dictionary<string, T>();
         }
 
+        /// <summary>
+        /// The method that deletes the user instance.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
+        /// <returns></returns>
         private Dictionary<string, T> DeleteUser<T>()
         {
             Console.WriteLine("***********************************************");
@@ -348,6 +372,11 @@ namespace Musketeers
             return (Dictionary<string, T>)(object)_userDictionary;
         }
 
+        /// <summary>
+        /// The method that deletes the car workshop instance.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
+        /// <returns></returns>
         private Dictionary<string, T> DeleteCarWorkshop<T>()
         {
             Console.WriteLine("***********************************************");
