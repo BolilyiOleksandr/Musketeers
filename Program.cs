@@ -115,6 +115,12 @@ namespace Musketeers
             return input;
         }
 
+        /// <summary>
+        /// The method that creates an instance of the entity.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
+        /// <param name="entity">Entity instance</param>
+        /// <returns></returns>
         private Dictionary<string, T> Create<T>(T entity)
         {
             if (entity is User)
@@ -130,6 +136,12 @@ namespace Musketeers
             return new Dictionary<string, T>();
         }
 
+        /// <summary>
+        /// The method that creates the dictionary of the User class.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
+        /// <param name="entity">Entity instance.</param>
+        /// <returns></returns>
         private Dictionary<string, T> CreateUser<T>(T entity)
         {
             FillUserInformation<T>(entity);
@@ -162,6 +174,12 @@ namespace Musketeers
             return (Dictionary<string, T>)(object)_userDictionary;
         }
 
+        /// <summary>
+        /// The method that creates the dictionary of the CarWorkshop class.
+        /// </summary>
+        /// <typeparam name="T">T type.</typeparam>
+        /// <param name="entity">Entity instance.</param>
+        /// <returns></returns>
         private Dictionary<string, T> CreateCarWorkshop<T>(T entity)
         {
             FillCarWorkshopInformation<T>(entity);
