@@ -61,6 +61,9 @@ namespace Musketeers
                     case 8:
                         main.CreateAppoitment();
                         break;
+                    case 9:
+                        main.ShowAppointment();
+                        break;
                     default:
                         Console.Write("Please select an option from the list.\n");
                         break;
@@ -79,6 +82,7 @@ namespace Musketeers
             Console.WriteLine("Delete a car workshop: press 6");
             Console.WriteLine("Search for all car workshops in a specific city: press 7");
             Console.WriteLine("Create an appointment: press 8");
+            Console.WriteLine("Show an appointment: press 9");
             Console.WriteLine("Exit: press 0\n");
             Console.WriteLine("===============================================");
 
@@ -427,13 +431,54 @@ namespace Musketeers
             Console.Write("Date and Time: ");
             var dateTime = Convert.ToDateTime(Console.ReadLine());
 
-            _appointment.Appointments = new Dictionary<string, Tuple<string, string, DateTime>>();
-            _appointment.Appointments[userName] = Tuple.Create(companyName, carTrademark, dateTime);
+            _appointment.Appointments = new Dictionary<string, Tuple<string, string, DateTime>>
+            {
+                [userName] = Tuple.Create(companyName, carTrademark, dateTime)
+            };
 
             Console.WriteLine("***********************************************\n");
-
             return _appointment.Appointments;
         }
+
+        private void ShowAppointment()
+        {
+            Console.Write("Username: ");
+            var userName = Console.ReadLine();
+
+            if (_appointment.Appointments is null ||
+                _appointment.Appointments.Where(i => i.Key == userName).Count() == 0)
+                Console.WriteLine($"There are no appointments for {userName}.\n");
+            else
+            {
+                Console.WriteLine("-----------------------------------------------");
+                foreach (KeyValuePair<string, Tuple<string, string, DateTime>> item in _appointment.Appointments.Where(i => i.Key == userName))
+                {
+                    Console.WriteLine($"Username: {item.Key}");
+                    Console.WriteLine($"Company name: {item.Value.Item1}");
+                    Console.WriteLine($"Car trademark: {item.Value.Item2}");
+                    Console.WriteLine($"Date and time: {item.Value.Item3}");
+                    Console.WriteLine();
+                }
+                Console.WriteLine("-----------------------------------------------\n");
+            }
+        }
+
+        /*
+        private void DeleteAppointment()
+        {
+            Console.WriteLine("***********************************************");
+            Console.Write("Username: ");
+            var userName = Console.ReadLine();
+
+            if (_userDictionary.ContainsKey(userName))
+                _userDictionary.Remove(userName);
+            else
+                Console.WriteLine("User does not exist in the dictionary.");
+
+            Console.WriteLine("***********************************************\n");
+            return (Dictionary<string, T>)(object)_userDictionary;
+        }
+        */
 
     }
 }
