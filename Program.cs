@@ -13,6 +13,7 @@ namespace Musketeers
 
         private User _user = null;
         private CarWorkshop _carWorkshop = null;
+        private Appointment _appointment = null;
         private Dictionary<string, User> _userDictionary = null;
         private Dictionary<string, CarWorkshop> _carWorkshopsDictionary = null;
         #endregion
@@ -24,7 +25,8 @@ namespace Musketeers
             var main = new MainClass()
             {
                 _userDictionary = new Dictionary<string, User>(),
-                _carWorkshopsDictionary = new Dictionary<string, CarWorkshop>()
+                _carWorkshopsDictionary = new Dictionary<string, CarWorkshop>(),
+                _appointment = new Appointment()
             };
 
             while (true)
@@ -57,7 +59,7 @@ namespace Musketeers
                         main.Search<CarWorkshop>();
                         break;
                     case 8:
-                        main.CreateAppoitment<User>();
+                        main.CreateAppoitment();
                         break;
                     default:
                         Console.Write("Please select an option from the list.\n");
@@ -391,33 +393,46 @@ namespace Musketeers
             return city;
         }
 
-        private Dictionary<string, T> CreateAppoitment<T>()
+        private Dictionary<string, Tuple<string, string, DateTime>> CreateAppoitment()
         {
-            if (typeof(T) == typeof(User))
+            Console.WriteLine("***********************************************");
+
+            Console.Write("Username: ");
+            var userName = Console.ReadLine();
+
+            if (_userDictionary.Select(i => i.Key == userName).Count() == 0)
             {
-                Console.WriteLine("***********************************************");
-
-                Console.Write("Username: ");
-                var userName = Console.ReadLine();
-
-                if (_userDictionary.Select(i => i.Key == userName).Count() == 0)
-                {
-                    Console.WriteLine("There are no users in the dictionary.\n");
-                    return new Dictionary<string, T>();
-                }
-
-                Console.Write("Company name: ");
-                var companyName = Console.ReadLine();
-
-                if (_carWorkshopsDictionary.Select(i => i.Key == companyName).Count() == 0)
-                {
-                    Console.WriteLine("There is no company name in the dictionary.\n");
-                    return new Dictionary<string, T>();
-                }
+                Console.WriteLine("There are no users in the dictionary.\n");
+                return new Dictionary<string, Tuple<string, string, DateTime>>();
             }
 
+            Console.Write("Company name: ");
+            var companyName = Console.ReadLine();
+
+            if (_carWorkshopsDictionary.Select(i => i.Key == companyName).Count() == 0)
+            {
+                Console.WriteLine("There is no company name in the dictionary.\n");
+                return new Dictionary<string, Tuple<string, string, DateTime>>();
+            }
+
+            Console.Write("Car trademark: ");
+            var carTrademark = Console.ReadLine();
+
+            if (_carWorkshopsDictionary.Select(i => i.Value.CarTrademarks == carTrademark).Count() == 0)
+            {
+                Console.WriteLine("There is no car trademark in the dictionary.\n");
+                return new Dictionary<string, Tuple<string, string, DateTime>>();
+            }
+
+            Console.Write("Date and Time: ");
+            var dateTime = Convert.ToDateTime(Console.ReadLine());
+
+            _appointment.Appointments = new Dictionary<string, Tuple<string, string, DateTime>>();
+            _appointment.Appointments[userName] = Tuple.Create(companyName, carTrademark, dateTime);
+
             Console.WriteLine("***********************************************\n");
-            return (Dictionary<string, T>)(object)_userDictionary;
+
+            return _appointment.Appointments;
         }
 
     }

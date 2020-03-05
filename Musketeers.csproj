@@ -35,6 +35,7 @@
     <Compile Include="User.cs" />
     <Compile Include="CarWorkshop.cs" />
     <Compile Include="ILocation.cs" />
+    <Compile Include="Appointment.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
