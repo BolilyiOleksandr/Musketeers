@@ -69,15 +69,18 @@ namespace Musketeers
                     main.Search<CarWorkshop>();
                     break;
                 case 8:
-                    main.CreateAppoitment();
+                    main.ShowCarWorkshopsForCarTrademarkInCity();
                     break;
                 case 9:
-                    main.ShowAppointment();
+                    main.CreateAppoitment();
                     break;
                 case 10:
-                    main.UpdateAppointmentDateTime();
+                    main.ShowAppointment();
                     break;
                 case 11:
+                    main.UpdateAppointmentDateTime();
+                    break;
+                case 12:
                     main.DeleteAppointment();
                     break;
                 default:
@@ -100,10 +103,11 @@ namespace Musketeers
             Console.WriteLine("Show a car workshop: press 5");
             Console.WriteLine("Delete a car workshop: press 6");
             Console.WriteLine("Search for all car workshops in a specific city: press 7");
-            Console.WriteLine("Create an appointment: press 8");
-            Console.WriteLine("Show an appointment: press 9");
-            Console.WriteLine("Update an appointment date and time: press 10");
-            Console.WriteLine("Delete an appointment: press 11");
+            Console.WriteLine("Search for all car workhops for the specific car trademark in the specific city: press 8");
+            Console.WriteLine("Create an appointment: press 9");
+            Console.WriteLine("Show an appointment: press 10");
+            Console.WriteLine("Update an appointment date and time: press 11");
+            Console.WriteLine("Delete an appointment: press 12");
             Console.WriteLine("Exit: press 0\n");
             Console.WriteLine("===============================================");
 
@@ -476,6 +480,28 @@ namespace Musketeers
                 }
                 Console.WriteLine("-----------------------------------------------\n");
             }
+        }
+
+        /// <summary>
+        /// The methods that shows the number of car workshops for the car trademark in the city.
+        /// </summary>
+        /// <returns></returns>
+        private void ShowCarWorkshopsForCarTrademarkInCity()
+        {
+            Console.Write("Car trademark: ");
+            var carTrademark = Console.ReadLine();
+
+            Console.Write("City: ");
+            var city = Console.ReadLine();
+
+            var result = _carWorkshopsDictionary.Where(i => i.Value.CarTrademarks == carTrademark &&
+                                                   i.Value.City == city).Count();
+
+            if (result > 0)
+                Console.WriteLine($"The number of available car workshop for the {carTrademark} in the {city} is {result}.");
+            else
+                Console.WriteLine($"There are no car workshops for the {carTrademark} in the {city}.\n");
+            Console.WriteLine("-----------------------------------------------\n");
         }
 
         /// <summary>
